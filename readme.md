@@ -1,0 +1,2 @@
+W styczniu 2026 zafascynowałem sie pracami Jeffrey Ventrella https://www.ventrella.com/ i spróbowałem stworzyć własnego swimbota - kilka "plemników" w procesie ewolucji płynie do celu coraz dalej. W każdej kolejnej gemneracji wybieramy tylko najlepiej płynace swimboty i droga ewolucji staramy się wyhodować najlepiej pływające.
+Na razie jest to projekt na wczesnym etapie , pojawiaja sie błędy itp 
