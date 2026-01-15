@@ -5,6 +5,7 @@ import pymunk.pygame_util
 import math
 import random
 import copy
+import time
 
 # --- KONFIGURACJA ---
 WIDTH, HEIGHT = 1500, 600
@@ -110,15 +111,14 @@ def create_random_genes():
 #    for val in genes:
 #        # Mała zmiana (dryf genetyczny)
 #        val += random.uniform(-0.1, 0.1)
-#        
+#         
 #        # Rzadka duża mutacja
 #        if random.random() < mutation_rate:
-#            val += random.uniform(-0.5, 0.5)
-#            
+#            val += random.uniform(-0.5, 0.5)          
 #        new_genes.append(val)
 #    
-    # Zabezpieczenie przed wartościami ujemnymi dla amplitudy/szybkości, jeśli chcemy
-    # (choć ujemna szybkość to po prostu ruch w drugą stronę fazy, co też jest ok)
+# Zabezpieczenie przed wartościami ujemnymi dla amplitudy/szybkości, jeśli chcemy
+# (choć ujemna szybkość to po prostu ruch w drugą stronę fazy, co też jest ok)
 #    return new_genes
 
 def mutate(genes):
@@ -157,6 +157,7 @@ def setup_simulation(genes_list=None):
         bots.append(bot)
         
     return space, bots
+    
 
 # --- GŁÓWNA PĘTLA ---
 def main():
@@ -210,6 +211,9 @@ def main():
             print(f"Gen {generation_count} zakończona. Najlepszy dystans: {record_now:.2f}")
             print(f"Najlepsze geny: {['%.2f' % g for g in best_bot.genes]}")
             
+            # Pauza x sekund, aby zobaczyć wynik końcowy rundy
+            time.sleep(1)
+            
             # Wybieramy rodziców (np. top 25% populacji)
             top_performers = bots[:POPULATION_SIZE // 4]
             
@@ -230,6 +234,7 @@ def main():
             frame_count = 0
             time_sim = 0
             generation_count += 1
+            
 
         # 3. Rysowanie
         screen.fill((20, 20, 30))
@@ -245,6 +250,10 @@ def main():
             f"Czas do końca rundy: {(GENERATION_DURATION - frame_count)//60}s",
             f"Najlepszy w historii: {int(max_distance_record)}"
         ]
+
+        if generation_count > 1:
+            info_text.append(f"Generacja {generation_count} - najlepszy dystans: {record_now:.0f}")
+            info_text.append(f"Najlepsze geny: {['%.2f' % g for g in best_bot.genes]}")
         
         for i, line in enumerate(info_text):
             text_surf = font.render(line, True, (200, 200, 200))
