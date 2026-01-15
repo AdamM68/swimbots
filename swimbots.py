@@ -7,7 +7,7 @@ import random
 import copy
 
 # --- KONFIGURACJA ---
-WIDTH, HEIGHT = 1200, 600
+WIDTH, HEIGHT = 1500, 600
 FPS = 60
 POPULATION_SIZE = 10
 GENERATION_DURATION = 600  # Ile klatek trwa jedna runda (np. 600 klatek = 10 sekund)
@@ -194,8 +194,9 @@ def main():
         if frame_count >= GENERATION_DURATION:
             # --- EWOLUCJA ---
 
-            # Usuwamy boty, które mają błędy w pozycji (NaN)
-            bots = [b for b in bots if not math.isnan(b.get_distance())]
+            # Usuwamy boty, które mają błędy w pozycji (NaN) lub mają dystans większy niż 1500 - czyli te które nie płyna do przodu tylko uciekają gdzieś w bok ruchem niekontrolowanym
+            # bots = [b for b in bots if not math.isnan(b.get_distance())]
+            bots = [b for b in bots if not math.isnan(b.get_distance()) and b.get_distance() <= 1500]
 
             # Sortujemy tylko te, które przeżyły
             bots.sort(key=lambda b: b.get_distance(), reverse=True)
