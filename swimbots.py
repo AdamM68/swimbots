@@ -25,6 +25,7 @@ class Swimbot:
         self.shapes = []
         self.joints = []
         self.color = color
+        self.time_offset = random.uniform(0, 2 * math.pi) # Losowy punkt startu fali
         
         # Budowa ciała
         segment_width = 30
@@ -74,7 +75,7 @@ class Swimbot:
         
         for i, spring in enumerate(self.joints):
             # Formuła ruchu oparta na genach
-            target_angle = math.sin(time * speed - i * phase) * amp
+            target_angle = math.sin((time + self.time_offset) * speed - i * phase) * amp
             spring.rest_angle = target_angle
 
         # --- NOWA LOGIKA OPORU WODY ---
