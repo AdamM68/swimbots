@@ -16,7 +16,7 @@ SEGMENTS_PER_BOT = 6
 
 # Zakresy losowania genów (dla pierwszej generacji)
 # Geny to: [szybkość, amplituda, przesunięcie_fazy]
-GENE_RANGES = [(2.0, 15.0), (0.2, 1.5), (0.0, 1.5)] 
+GENE_RANGES = [(2.0, 10.0), (0.2, 1.5), (0.0, 1.5)]  # [(2.0, 15.0), (0.2, 1.5), (0.0, 1.5)]
 
 class Swimbot:
     def __init__(self, space, start_pos, genes, color):
