@@ -1,0 +1,104 @@
+Zasady dziedziczenia i mutacji w aplikacji Swimbots
+
+W tej aplikacji symulacja ewolucyjna opiera się na mechanizmach ewolucyjnych, a nie klasycznym dziedziczeniu obiektowym (jak w programowaniu OOP). "Dziedziczenie" tutaj oznacza przekazywanie cech genetycznych między generacjami botów. Oto kluczowe zasady:
+
+Reprezentacja genów:
+
+Każdy bot ma 3 geny: [szybkość, amplituda, przesunięcie_fazy].
+Geny kontrolują ruch segmentów ciała bota (np. szybkość fali sinusoidalnej, amplituda wygięcia, przesunięcie fazy między segmentami).
+Selekcja rodziców:
+
+Po każdej generacji (trwającej 600 klatek, czyli około 10 sekund) boty są sortowane według dystansu przebytego przez "głowę" (pierwszy segment).
+Wybierani są najlepsi (top 25% populacji, czyli około 2-3 boty z 10-osobowej populacji).
+Fitness (ocena) to pozycja X pierwszego segmentu – im dalej bot popłynie, tym lepiej.
+Elityzm:
+
+Najlepszy bot z poprzedniej generacji przechodzi do następnej bez żadnych zmian (jego geny są kopiowane w całości).
+To zapewnia, że najlepsze rozwiązanie nie zostanie utracone przez mutację.
+Tworzenie potomstwa:
+
+Pozostałe boty w nowej generacji są tworzone przez "dziedziczenie" genów od rodziców (losowo wybranych z top 25%).
+Geny rodziców są podstawą dla potomków, ale podlegają mutacji (patrz poniżej).
+Brak krzyżowania (crossover):
+
+Aplikacja nie implementuje krzyżowania genów między rodzicami. Każdy potomek dziedziczy geny od jednego rodzica, a następnie są one mutowane.
+Zasady mutacji w aplikacji Swimbots
+Mutacja wprowadza losowe zmiany w genach, symulując ewolucyjną zmienność. Jest to kluczowy mechanizm, który pozwala populacji ewoluować i znajdować lepsze rozwiązania.
+
+Jak działa mutacja:
+
+Funkcja mutate(genes) jest wywoływana dla każdego potomka (oprócz elity).
+Dla każdego genu dodaje się małą losową zmianę: val += random.uniform(-0.1, 0.1).
+To symuluje "dryf genetyczny" – niewielkie, stopniowe zmiany.
+Ograniczenia zakresu:
+
+Po mutacji geny są ograniczane do bezpiecznych zakresów (GENE_RANGES):
+Szybkość: 2.0–15.0
+Amplituda: 0.2–1.5
+Przesunięcie fazy: 0.0–1.5
+Zapobiega to ekstremalnym wartościom, które mogłyby zniszczyć symulację (np. zbyt duża amplituda powodująca niestabilność).
+Brak dużej mutacji:
+
+W starszej wersji kodu (zakomentowanej) była 10% szansa na dużą mutację (random.uniform(-0.5, 0.5)), ale obecnie została usunięta.
+Teraz mutacja jest tylko mała i deterministyczna dla wszystkich genów – każdy gen ulega zmianie.
+Wpływ na ewolucję:
+
+Mutacja pozwala populacji eksplorować nowe kombinacje genów, ale elityzm zapewnia stabilność.
+Jeśli mutacja jest zbyt mała, ewolucja może utknąć; jeśli zbyt duża, populacja może się "rozpaść".
+
+Te mechanizmy razem tworzą prosty algorytm ewolucyjny, inspirowany biologią, gdzie boty "uczą się" pływać efektywniej przez selekcję i mutację. 
+
+====================
+
+Inheritance and Mutation Principles in the Swimbots Application
+
+In this application, evolutionary simulation is based on evolutionary mechanisms, rather than classical object-oriented inheritance (as in OOP programming). "Inheritance" here refers to the transfer of genetic traits between generations of bots. Here are the key principles:
+
+Gene Representation:
+
+Each bot has three genes: [speed, amplitude, phase_shift].
+The genes control the movement of the bot's body segments (e.g., sine wave speed, bending amplitude, and phase shift between segments).
+Parent Selection:
+
+After each generation (lasting 600 frames, or approximately 10 seconds), the bots are sorted by the distance traveled by their "head" (the first segment).
+
+The best bots (the top 25% of the population, or approximately 2-3 bots from a population of 10) are selected. Fitness (rating) is the X position in the first segment – ​​the further the bot swims, the better.
+Elitism:
+
+The best bot from the previous generation passes on to the next generation without any changes (its genes are copied in their entirety).
+This ensures that the best solution is not lost through mutation.
+Progeny Generation:
+
+The remaining bots in the next generation are created by "inheriting" genes from their parents (randomly selected from the top 25%).
+The parents' genes are the basis for the offspring, but they are subject to mutation (see below).
+No Crossover:
+
+The application does not implement gene crossover between parents. Each offspring inherits genes from a single parent, and these genes are then mutated.
+Mutation Rules in the Swimbots Application
+Mutation introduces random changes to genes, simulating evolutionary variability. This is a key mechanism that allows the population to evolve and find better solutions.
+
+How Mutation Works:
+
+The mutate(genes) function is called for each offspring (except the elite).
+For each gene, a small random change is added: val += random.uniform(-0.1, 0.1).
+This simulates "genetic drift" – small, gradual changes.
+Range Constraints:
+
+After mutation, genes are constrained to safe ranges (GENE_RANGES):
+
+Speed: 2.0–15.0
+Amplitude: 0.2–1.5
+Phase Shift: 0.0–1.5
+This prevents extreme values ​​that could ruin the simulation (e.g., too large an amplitude causing instability).
+
+No Large Mutation:
+
+In an older version of the code (commented out), there was a 10% chance of a large mutation (random.uniform(-0.5, 0.5)), but it has now been removed. Now, mutation is only small and deterministic for all genes—every gene changes.
+
+Impact on evolution:
+
+Mutation allows the population to explore new gene combinations, but elitism ensures stability.
+
+If the mutation is too small, evolution can stall; if too large, the population can "fall apart."
+
+These mechanisms combine to create a simple evolutionary algorithm, inspired by biology, where bots "learn" to swim more efficiently through selection and mutation.
